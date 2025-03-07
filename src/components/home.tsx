@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import DashboardHeader from "./dashboard/DashboardHeader";
 import RedemptionSummary from "./dashboard/RedemptionSummary";
 import RedemptionRequestList from "./dashboard/RedemptionRequestList";
@@ -13,17 +13,26 @@ import ApproverPortalPage from "../pages/ApproverPortalPage";
 import { NotificationToastContainer } from "./notifications/NotificationToast";
 import { useNotifications } from "@/context/NotificationContext";
 import { Button } from "./ui/button";
-import { PlusCircle, ArrowLeft, Users, Bell } from "lucide-react";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "./ui/dialog";
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import {
+  PlusCircle,
+  ArrowLeft,
+  Users,
+  Bell,
+  User,
+  ArrowRight,
+} from "lucide-react";
 import { Separator } from "./ui/separator";
+import InvestorDashboard from "./dashboard/InvestorDashboard";
+import OperationsDashboard from "./operations/OperationsDashboard";
 
 const Home = () => {
   const [isNewRequestOpen, setIsNewRequestOpen] = useState(false);
@@ -39,7 +48,10 @@ const Home = () => {
     | "new-request"
     | "notification-settings"
     | "approver-portal"
-  >("dashboard");
+    | "investor-dashboard"
+    | "operations-dashboard"
+    | "role-selection"
+  >("role-selection");
   const [selectedRedemptionWindow, setSelectedRedemptionWindow] =
     useState<any>(null);
 
@@ -90,8 +102,153 @@ const Home = () => {
         notifications={notifications.filter((n) => !n.read).slice(0, 10)}
         onDismiss={dismissNotification}
       />
-
       <main className="container mx-auto px-4 py-8">
+        {currentView === "role-selection" && (
+          <div className="max-w-4xl mx-auto">
+            <h1 className="text-3xl font-bold text-center mb-8">
+              Chain Capital Redemptions
+            </h1>
+
+            <Tabs defaultValue="role" className="w-full">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="role">Select Role</TabsTrigger>
+                <TabsTrigger value="about">About Platform</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="role" className="space-y-4 py-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <Card className="hover:shadow-md transition-shadow">
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <CardTitle>Investor Portal</CardTitle>
+                        <User className="h-6 w-6 text-blue-500" />
+                      </div>
+                      <CardDescription>
+                        Access your investment dashboard to manage redemption
+                        requests and track status
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-gray-500">
+                        View your holdings, submit redemption requests, and
+                        monitor approval progress
+                      </p>
+                    </CardContent>
+                    <CardFooter>
+                      <Button
+                        className="w-full"
+                        onClick={() => setCurrentView("investor-dashboard")}
+                      >
+                        Enter Investor Dashboard
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </CardFooter>
+                  </Card>
+
+                  <Card className="hover:shadow-md transition-shadow">
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <CardTitle>Operations Portal</CardTitle>
+                        <Users className="h-6 w-6 text-indigo-500" />
+                      </div>
+                      <CardDescription>
+                        Manage redemption requests, configure windows, and
+                        handle approvals
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-gray-500">
+                        Review and approve redemption requests, set up
+                        redemption windows, and manage projects
+                      </p>
+                    </CardContent>
+                    <CardFooter>
+                      <Button
+                        className="w-full"
+                        onClick={() => setCurrentView("operations-dashboard")}
+                      >
+                        Enter Operations Dashboard
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="about" className="py-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>About the Redemption Platform</CardTitle>
+                    <CardDescription>
+                      A secure platform for managing blockchain investment
+                      redemptions
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <p>
+                      This platform provides a comprehensive solution for
+                      managing token redemption requests with a secure
+                      multi-signature approval workflow.
+                    </p>
+
+                    <div className="space-y-2">
+                      <h3 className="font-medium">Key Features:</h3>
+                      <ul className="list-disc pl-5 space-y-1">
+                        <li>
+                          Secure multi-signature approval process requiring 2 of
+                          3 approvals
+                        </li>
+                        <li>
+                          Real-time status tracking with visual workflow
+                          indicators
+                        </li>
+                        <li>Scheduled redemption windows for interval funds</li>
+                        <li>
+                          Comprehensive dashboard for both investors and
+                          operations staff
+                        </li>
+                        <li>
+                          Blockchain transaction tracking and confirmation
+                        </li>
+                      </ul>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
+          </div>
+        )}
+
+        {currentView === "investor-dashboard" && (
+          <div>
+            <Button
+              variant="outline"
+              className="mb-6"
+              onClick={() => setCurrentView("role-selection")}
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Selection
+            </Button>
+            <InvestorDashboard />
+          </div>
+        )}
+
+        {currentView === "operations-dashboard" && (
+          <div>
+            <Button
+              variant="outline"
+              className="mb-6"
+              onClick={() => setCurrentView("role-selection")}
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Selection
+            </Button>
+            <OperationsDashboard
+              onBack={() => setCurrentView("role-selection")}
+            />
+          </div>
+        )}
+
         {currentView === "dashboard" && (
           <>
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
@@ -322,3 +479,16 @@ const Home = () => {
 };
 
 export default Home;
+
+// This component is needed for the transaction history section
+const TransactionHistory = ({ requestId }: { requestId: string }) => {
+  return (
+    <div className="bg-white rounded-lg shadow-md p-6">
+      <h2 className="text-xl font-semibold mb-4">Transaction History</h2>
+      <p className="text-gray-600">
+        Transaction history for request {requestId}
+      </p>
+      {/* Transaction history content would go here */}
+    </div>
+  );
+};

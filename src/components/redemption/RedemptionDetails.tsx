@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useRealtimeStatus } from "@/hooks/useRealtimeStatus";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import TransactionHistory from "./TransactionHistory";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

@@ -52,15 +52,14 @@ const DashboardHeader = ({
         <div className="flex items-center gap-2">
           <div className="h-8 w-8 bg-primary rounded-md flex items-center justify-center">
             <span className="text-primary-foreground font-bold text-lg">
-              IR
+              CR
             </span>
           </div>
           <h1 className="text-xl font-bold hidden md:block">
-            Investor Redemption
+            Chain Capital Redemptions
           </h1>
         </div>
       </div>
-
       {/* Center section with search (hidden on mobile) */}
       <div className="hidden md:flex items-center max-w-md w-full mx-4 relative">
         <div className="relative w-full">
@@ -72,7 +71,6 @@ const DashboardHeader = ({
           />
         </div>
       </div>
-
       {/* Right section with notifications and user profile */}
       <div className="flex items-center gap-2">
         <NotificationCenter
@@ -83,7 +81,7 @@ const DashboardHeader = ({
           onDismiss={dismissNotification}
         />
 
-        <DropdownMenu>
+        <DropdownMenu className="h-8">
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-10 w-10 rounded-full">
               <Avatar>
